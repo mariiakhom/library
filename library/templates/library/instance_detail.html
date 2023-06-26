@@ -1,0 +1,41 @@
+{% extends 'library/base.html' %}
+
+{% block title %}{{ object.book }}{% endblock %}
+
+{% block header %}
+<h1 class="text-center">
+    {{ object.id }}
+</h1>
+{% endblock %}
+
+{% block main %}
+
+<div class="row">
+    <div class="col-2">
+        <img src="{{ object.book.cover }}" class="object-fit-scale w-100 rounded p-1 border border-secondary">
+    </div>
+    <div class="col-7 px-4">
+        <a href="{{ object.book.url_detail }}" class="text-decoration-none">
+            <h4 class="text-primary">{{ object.book }}</h4>
+        </a>
+        
+        <hr>
+
+        {% if object.status == 'a' %}
+        <p>Give to customer</p>
+        <form action="{% url 'lib:lend-instance' pk=object.id %}" method="post">
+            {% csrf_token %}
+            <label for="">Due Back</label>
+            <input type="date" name="due_back" id="" class="form-control">
+            <br>
+            <input type="submit" value="Submit" class="btn btn-outline-secondary">
+        </form>
+        {% endif %}
+
+    </div>
+    <div class="col-3">
+
+    </div>
+</div>
+
+{% endblock %}

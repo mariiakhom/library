@@ -1,0 +1,43 @@
+{% extends 'library/base.html' %}
+
+{% block title %}Powercode Library{% endblock %}
+
+{% block header %}
+<h1 class="text-center">Powercode Library</h1>
+{% endblock %}
+
+{% block main %}
+
+<div class="row mt-5 justify-content-around">
+    <div class="col-3 text-center bg-white p-5 rounded">
+        {% include 'library/icons/book.html' with size=50 %}
+          <a href="{% url 'lib:book-list' %}" class="text-decoration-none">
+            <h2 class="text-primary">Books</h2>
+          </a>
+          <p class="fs-3">
+            ({{ n1 }})
+          </p>
+    </div>
+    <div class="col-3 text-center bg-white p-5 rounded">
+        {% include 'library/icons/author.html' with size=50 %}
+          <a href="{% url 'lib:author-list' %}" class="text-decoration-none">
+            <h2 class="text-primary">Authors</h2>
+          </a>
+          <p class="fs-3">
+            ({{ n2 }})
+          </p>
+    </div>
+    <div class="col-3 text-center bg-white p-5 rounded">
+        {% include 'library/icons/genre.html' with size=50 %}
+          <a href="{% url 'lib:genre-list' %}" class="text-decoration-none">
+            <h2 class="text-primary">Genres</h2>
+          </a>
+          <p class="fs-3">
+            ({{ n3 }})
+          </p>
+    </div>
+</div>
+
+
+
+{% endblock %}

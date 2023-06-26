@@ -1,0 +1,74 @@
+{% extends 'library/base.html' %}
+
+{% block title %}{{ object }}{% endblock %}
+
+{% block header %}
+<h1 class="text-center">
+    <a href="{% url 'lib:author-list' %}" class="text-primary text-decoration-none">
+        {% include 'library/icons/author.html' with size=50 %}
+    </a>
+    {{ object }} 
+    {% if object.born %}
+    <span class="fs-4">
+    ({{ object.born|timesince }})        
+    </span>
+    {% endif %}
+</h1>
+{% endblock %}
+
+{% block main %}
+
+<div class="row">
+    <div class="col-2">
+        <img src="{{ object.portrait }}" class="object-fit-scale w-100 rounded p-1 border border-secondary">
+
+        {% for g in object.genres.all %}
+        <br>
+        <a href="{{ g.url_detail }}" class="text-primary text-decoration-none fs-5">
+            {{ g }}
+        </a>
+        {% endfor %}
+
+    </div>
+    <div class="col-7 px-4">
+        {% for b in object.books.all %}
+        <div class="row justify-content-center">
+            <div class="col-8 p">
+                <a href="{{ b.url_detail }}" class="text-decoration-none">
+                    <h4 class="text-primary text-end m-5">{{ b }}</h4>
+                </a>
+            </div>
+            <div class="col-2">
+                <img src="{{ b.cover }}" class="object-fit-scale w-75 rounded p-1 border border-secondary m-3">
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <div class="col-3">
+        {% if object.comments %}
+        
+        <p class="fs-4">
+            Comments ({{ object.comments|length }}):
+        </p>
+        <table class="table">
+            {% for c in object.comments %}
+            <tr>
+                <td>
+                    {{ c.user }} about
+                    <a href="{{ c.book.url_detail }}" class="text-decoration-none text-primary">
+                        "{{ c.book }}":
+                    </a>
+                    {{ c }} 
+                    <br>
+                    <span style="font-size: italic; font-size: 80%;">
+                        {{ c.created|timesince }} ago
+                    </span>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}

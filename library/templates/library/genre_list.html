@@ -1,0 +1,44 @@
+{% extends 'library/base.html' %}
+
+{% block title %}Genres{% endblock %}
+
+{% block header %}
+<h1 class="text-center">
+    {% include 'library/icons/genre.html' with size=50 %}
+    All Genres
+</h1>
+{% endblock %}
+
+{% block main %}
+<a name="top"></a>
+
+<div class="my-5 text-center">
+    {% for g in object_list %}
+    <a href="{{ g.url_detail }}" class="m-4 text-primary fs-5 text-decoration-none">
+        {{ g }}
+    </a>
+    {% endfor %}
+</div>
+
+{% for g in object_list %}
+
+<a name="g-{{ g.id }}"></a>
+<h3>
+    {{ g }} ({{ g.books.count }})
+    <a href="#top" class="fs-5">up</a>
+</h3>
+
+<div class="row mt-5">
+    {% for b in g.books.all %}
+    <div class="col-3 p-3 text-center">
+        <img src="{{ b.cover }}" class="object-fit-scale h-75 w-50 rounded p-1 border border-secondary">
+        <a href="{{ b.url_detail }}"" class="text-decoration-none">
+            <h4 class="text-primary">{{ b }}</h4>
+        </a>
+    </div>
+    {% endfor %}
+</div>
+
+{% endfor %}
+
+{% endblock %}

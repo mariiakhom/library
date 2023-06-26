@@ -1,0 +1,39 @@
+{% extends 'library/base.html' %}
+
+{% block title %}Books{% endblock %}
+
+{% block header %}
+<h1 class="text-center">
+    {% include 'library/icons/book.html' with size=50 %}
+    All Books
+</h1>
+{% endblock %}
+
+{% block main %}
+
+<div class="row mt-5">
+    {% for b in object_list %}
+    <div class="col-3 p-3 text-center">
+        <img src="{{ b.cover }}" class="object-fit-scale h-75 w-50 rounded p-1 border border-secondary">
+        <a href="{{ b.url_detail }}" class="text-decoration-none">
+            <h4 class="text-primary">{{ b }}</h4>
+        </a>
+
+        <p>
+            {% for g in b.genres.all %}
+            {{ g }}
+            {% endfor %}
+
+            {% if b.number_of_comments %}
+            <br>
+            comments: {{ b.number_of_comments }}
+        
+        {% endif %}
+        </p>
+    </div>
+    {% endfor %}
+</div>
+
+
+
+{% endblock %}

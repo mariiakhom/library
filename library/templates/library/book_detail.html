@@ -1,0 +1,109 @@
+{% extends 'library/base.html' %}
+
+{% block title %}{{ object }}{% endblock %}
+
+{% block header %}
+<h1 class="text-center">
+    <a href="{% url 'lib:book-list' %}" class="text-primary text-decoration-none">
+        {% include 'library/icons/book.html' with size=50 %}
+    </a>
+    {{ object }}
+</h1>
+{% endblock %}
+
+{% block main %}
+
+<div class="row">
+    <div class="col-2">
+        <img src="{{ object.cover }}" class="object-fit-scale w-100 rounded p-1 border border-secondary">
+
+        {% for g in object.genres.all %}
+        <br>
+        <a href="{{ g.url_detail }}" class="text-primary text-decoration-none fs-5">
+            {{ g }}
+        </a>
+        {% endfor %}
+
+    </div>
+    <div class="col-7 px-4">
+        <a href="{{ object.author.url_detail }}" class="text-decoration-none">
+            <h4 class="text-success-emphasis">{{ object.author }}</h4>
+        </a>
+        {% if object.summary %}
+        <div class="my-5">
+            <h5>Summary:</h5>
+            <p>{{ object.summary }}</p>
+        </div>
+        {% endif %}
+        </a>
+        {% if object.instances.exists %}
+        <div class="my-5">
+            <h5>Instances:</h5>
+            <table class="table">
+                {% for i in object.instances.all %}
+                <tr>
+                    <td>{{ i.get_status_display }}
+                        {% if i.status == 'o' %}
+                        till {{ i.due_back }}
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if i.status == 'o' %}
+                        <a href="{% url 'lib:instance-detail' pk=i.id %}">return</a>
+                        {% endif %}
+                        {% if i.status == 'a' %}
+                        <a href="{% url 'lib:instance-detail' pk=i.id %}">give to customer</a>
+                        {% endif %}
+                    </td>
+                    <td>{{ i.id }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+        {% endif %}
+    </div>
+    <div class="col-3">
+
+        {% if object.comments.exists %}
+
+        <p class="fs-4">
+            Comments ({{ object.comments.count }}):
+        </p>
+            <table class="table">
+            {% for c in object.comments.all %}
+            <tr>
+                <td>
+                    {{ c.user }}: {{ c }}
+                    <br>
+                    <span style="font-size: italic; font-size: 80%;">
+                    {{ c.created|timesince }} ago
+                    </span>
+                </td>
+            </tr>
+            {% endfor %}
+            </table>
+
+
+
+        {% else %}
+        
+        <p class="fs-4">
+            Leave First Comment
+        </p>
+        <hr>
+        {% endif %}
+
+        <form method="post" action="{% url 'lib:add-comment-model' pk=object.id %}">
+            {% csrf_token %}
+            <p class="fs-4">
+                Add Comment
+            </p>
+            {{ cf.as_p }}
+            <div class="my-4 d-grid gap-2">
+                <input type="submit" value="Add" class="btn btn-secondary">
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock %}
